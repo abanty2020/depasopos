@@ -3,7 +3,7 @@
       --------------------------------->     
       <div>
         <template v-if="menu == 0">
-            <h1>Dashboard</h1>
+            <h1>Estadísticas</h1>
         </template>
 
         <template v-if="menu == 1">
