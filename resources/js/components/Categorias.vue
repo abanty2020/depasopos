@@ -47,15 +47,61 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><button type="button" class="btn bg-gradient-success btn-sm"><i class="fas fa-pencil-alt"></i></button>
-                  <button type="button" class="btn bg-gradient-dark btn-sm"><i class="far fa-eye"></i></button>
-                  <button type="button" class="btn bg-gradient-danger btn-sm"><i class="fas fa-power-off"></i></button></td>
-                  <td>John Doe</td>
-                  <td>Las mejores prendas</td>
-                  <td><span class="badge bg-danger">Inactivo</span></td>                 
+                <tr v-for="(categoria, index) in categorias" :key="index">
+                  <td>
+                    <button
+                      type="button"
+                      v-tooltip="'Editar'"
+                      class="btn btn-outline-success btn-sm"
+                      @click="alert('Editar' + categoria.id)"
+                    >
+                      <i class="fas fa-pencil-alt"></i>
+                    </button>
+                    <button
+                      type="button"
+                      v-tooltip="'Ver'"
+                      class="btn btn-outline-warning btn-sm"
+                      @click="alert('Ver' + categoria.id)"
+                    >
+                      <i class="far fa-eye"></i>
+                    </button>
+                    <button                      
+                      type="button"
+                      v-tooltip="'Eliminar'"
+                      class="btn btn-outline-danger btn-sm"
+                      @click="alert('Activar' + categoria.id)"
+                    >
+                      <i class="far fa-trash-alt"></i>
+                    </button>                   
+                  </td>
+                  <td>{{ categoria.nombre }}</td>
+                  <td>{{ categoria.descripcion }}</td>
+                  <td>
+                    <toggle-button
+                      :value="true"
+                      name="phone"
+                      :labels="{ checked: 'ACTIVADO', unchecked: 'DESACTIVADO' }"
+                      :color="{ checked: '#28a745', unchecked: '#dc3545' }"
+                      :width="95"
+                    />
+                    <!-- <toggle-button/> -->
+                    <!-- <toggle-button
+                      @change="Activar_Desactivar"
+                      :value="valorAD"
+                      color="#28a745"
+                      width="80"
+                      height="20"
+                      font-size="12"
+                      :labels="{checked: 'ACTIVO', unchecked: 'INACTIVO'}"
+                    /> -->
+                    <!-- <span
+                      v-if="categoria.condicion == 1"
+                      class="badge bg-success"
+                      >Activo</span
+                    >
+                    <span v-else class="badge bg-danger">Inactivo</span> -->
+                  </td>
                 </tr>
-                
               </tbody>
             </table>
           </div>
@@ -168,14 +214,53 @@
   </div>
 </template>
 <script>
+// $(function () {
+//   $("body").tooltip({
+//     selector: '[data-toggle="tooltip"]',
+//   });
+// });
 export default {
   data() {
-    return {};
+    return {
+      // Variables
+      nombre: "",
+      descripcion: "",
+      categorias: [],
+
+      // Variables CheckBox Vue
+      label: "Activo",
+      valorAD: true,
+    };
   },
   methods: {
+    listarCategoria() {
+      let me = this;
+      axios
+        .get("/categoria")
+        .then(function (response) {
+          me.categorias = response.data;
+          // Vue.nextTick(function () {
+          //   $('[data-toggle="tooltip"]').tooltip();
+          // });
+          console.log(me.categorias);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    ListarCategoriaPaginacion() {},
     openModal() {
       $("#modal-default").modal("show");
     },
+    Activar_Desactivar() {
+      alert("baby");
+      this.label = "Inactivo";
+      this.valorAD = false;
+    },
+  },
+  mounted() {
+    this.listarCategoria();
+    $('[data-toggle="tooltip"]').tooltip();
   },
 };
 </script>
