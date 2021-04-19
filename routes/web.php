@@ -15,6 +15,7 @@ Route::get('/main', 'HomeController@index')->name('principal');
 
 // Categorias routes ...
 Route::get('categoria','CategoriaController@index');
+Route::get('categoria/listpage','CategoriaController@listPagination');
 Route::post('categoria/registrar','CategoriaController@store');
 Route::put('categoria/actualizar','CategoriaController@update');
 Route::put('categoria/desactivar','CategoriaController@desactivar');
